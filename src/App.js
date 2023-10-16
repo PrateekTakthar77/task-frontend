@@ -1,24 +1,31 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import { useSelector } from 'react-redux';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+
+import TodoList from './components/TodoList';
+import Login from './components/Login';
 
 function App() {
+  const data = window.localStorage.getItem('user')
+  const output = JSON.parse(data);
+  console.log(output?.role)
+  const userRole = output?.role
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      {userRole === 'Admin' ? (
+        <Navigate to="/admin-home" />
+      ) : (
+        <Navigate to="/" />
+      )}
+      <Routes>
+        <Route path="/" element={<Login />} />
+        <Route path="/admin-home" element={<TodoList />} />
+        <Route path="/controller-home" element={<TodoList />} />
+        <Route path="/Hcoach-home" element={<TodoList />} />
+        <Route path="/coach-home" element={<TodoList />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
